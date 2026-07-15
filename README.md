@@ -1,25 +1,25 @@
-# CSV Cleaner
+import pandas as pd
 
-Simple Python tool for cleaning and processing CSV files.
+# Read CSV file
 
-## Features
+df = pd.read_csv("input.csv")
 
-- Remove empty rows
+# Remove empty rows
 
-- Remove duplicate entries
+df = df.dropna(how="all")
 
-- Sort data automatically
+# Remove duplicates
 
-- Export cleaned CSV file
+df = df.drop_duplicates()
 
-## Technologies
+# Sort by the first column
 
-- Python
+first_column = df.columns[0]
 
-- pandas
+df = df.sort_values(by=first_column)
 
-## Example
+# Save cleaned file
 
-Input: input.csv
+df.to_csv("cleaned_output.csv", index=False)
 
-Output: cleaned_output.csv
+print("CSV file cleaned successfully!")
