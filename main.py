@@ -1,25 +1,41 @@
-import pandas as pd
+import csv
 
 # Read CSV file
 
-df = pd.read_csv("input.csv")
+with open("input.csv", "r", newline="", encoding="utf-8") as file:
 
-# Remove empty rows
+    reader = csv.reader(file)
 
-df = df.dropna(how="all")
+    rows = [row for row in reader if any(cell.strip() for cell in row)]
 
 # Remove duplicates
 
-df = df.drop_duplicates()
+unique_rows = []
 
-# Sort by the first column
+for row in rows:
 
-first_column = df.columns[0]
+    if row not in unique_rows:
 
-df = df.sort_values(by=first_column)
+        unique_rows.append(row)
 
-# Save cleaned file
+# Keep header separate
 
-df.to_csv("cleaned_output.csv", index=False)
+header = unique_rows[0]
+
+data = unique_rows[1:]
+
+# Sort data by first column
+
+data.sort(key=lambda x: x[0])
+
+# Write cleaned CSV file
+
+with open("cleaned_output.csv", "w", newline="", encoding="utf-8") as file:
+
+    writer = csv.writer(file)
+
+    writer.writerow(header)
+
+    writer.writerows(data)
 
 print("CSV file cleaned successfully!")
